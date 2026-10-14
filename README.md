@@ -42,3 +42,34 @@ dan tidak disimpan ke source code.
 npm run build
 npm test -- --runInBand
 ```
+
+## Deployment ke Vercel
+
+Backend sudah menyediakan entrypoint serverless pada `api/index.ts` dan
+konfigurasi pada `vercel.json`. Di Vercel, import repository GitHub lalu atur
+**Root Directory** ke `backend` (jika repository berisi frontend dan backend).
+Gunakan pengaturan berikut:
+
+- Build Command: `npm run build`
+- Framework Preset: `Other`
+- Node.js Version: `22.x`
+
+Tambahkan environment variable berikut di Vercel untuk Production, Preview, dan
+Development sesuai kebutuhan:
+
+```text
+MONGODB_URI=<connection-string-MongoDB-Atlas>
+JWT_ACCESS_SECRET=<secret-acak-panjang>
+FRONTEND_ORIGINS=https://<domain-frontend-vercel>
+API_PREFIX=api/v1
+SWAGGER_ENABLED=false
+```
+
+Setelah deployment selesai, API dapat diuji melalui:
+
+```text
+https://<domain-backend-vercel>/api/v1/health
+```
+
+Jangan mengunggah `.env` ke GitHub. Nilai environment production harus
+dimasukkan melalui menu **Project Settings > Environment Variables** di Vercel.
